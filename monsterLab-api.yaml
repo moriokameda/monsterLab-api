@@ -5,10 +5,199 @@ info:
   version: 1.0.0
 servers:
   - url: 'https://localhost:8080/api/v1'
+tags:
+  - name: favorite
+    description: favorite
+  - name: movie
+    description: movies list
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      description: movie id
+      schema:
+        $ref: "#/components/schemas/MovieId"
+    search:
+      name: title
+      in: query
+      required: false
+      description: search movie title keyword
+      schema:
+        $ref: "#/components/schemas/MovieTitle"
+  schemas:
+    MovieId:
+      type: integer
+      description: movie id
+      example: 1
+    MovieTitle:
+      type: string
+      description: movie title
+    MovieDescription:
+      type: string
+      description: movie detail
+    FavoriteFlg:
+      type: boolean
+      description: favorite movie flg
+    FavoriteCount:
+      type: integer
+      description: favorite added count
+    FavoriteListResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/FavoriteMovie"
+    FavoriteMovie:
+      type: object
+      description: favorite Movie
+      properties:
+        movieId:
+          $ref: "#/components/schemas/MovieId"
+        movieTitle:
+          $ref: "#/components/schemas/MovieTitle"
+        movieDescription:
+          $ref: "#/components/schemas/MovieDescription"
+    MovieListResponse:
+      type: array
+      items:
+        $ref: Movie
+    Movie:
+      type: object
+      properties:
+        movieId:
+          $ref: "#/components/schemas/MovieId"
+        movieTitle:
+          $ref: "#/components/schemas/MovieTitle"
+        movieDescription:
+          $ref: "#/components/schemas/MovieDescription"
+        favoriteCount:
+          $ref: "#/components/schemas/FavoriteCount"
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+
 paths:
   /favorites:
     get:
       tags:
-        - favorites
+        - favorite
       summary: return that the user has previously favoritted.
-
+      description: retrurn user favorite movie list
+      responses:
+        200:
+          description: is ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteListResponse"
+              example:
+                - movie_id: 1
+                  movie_title: "harry potter"
+                - movie_id: 2
+                  movie_title: "pirates of Caribbean"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /favorite/{id}:
+    post:
+      tags:
+        - favorite
+      summary: post favorite movie
+      parameters:
+        - $ref: "#/components/schemas/MovieId"
+      responses:
+        200:
+          description: is ok
+        400:
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        404:
+          description: NOT_FOUND
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /movies:
+    get:
+      tags:
+        - movie
+      summary: movie list
+      description: movie list
+      parameters:
+        - in: query
+          name: search
+          required: false
+          schema:
+            $ref: "#/components/schemas/MovieTitle"
+      responses:
+        200:
+          description: is ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MovieListResponse"
+        400:
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /movies/{id}:
+    get:
+      tags:
+        - movie
+      summary: get movie detail
+      description: get movie detail
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: "#/components/schemas/MovieId"
+      responses:
+        200:
+          description: is ok
+          content:
+            appliation/json:
+              schema:
+                $ref: "#/components/schemas/Movie"
+        400:
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        404:
+          description: NOT_FOUND
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: INTERNAL_SERVER_ERROR
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
