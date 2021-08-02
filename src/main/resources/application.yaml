@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: local
+
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3346/monsterlab-api?useUnicode=true&characterEcoding=utf8
+    username: monsterlab
+    password: secret
+  flyway:
+    enabled: true
+    locations: classpath:/db/createTable,classpath:/db/insertData
+doma:
+  dialect: mysql
+
+server:
+  port: 8080
