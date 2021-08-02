@@ -2,6 +2,9 @@ plugins {
     id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.flywaydb.flyway' version '6.5.0'
+    id("org.seasar.doma.codegen") version "1.2.1"
+    id("org.seasar.doma.compile") version "1.1.0"
 }
 
 group = 'com.moriokameda'
@@ -16,13 +19,22 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    /* flyway */
     implementation 'org.flywaydb:flyway-core'
+    /* doma2 */
+    implementation("org.seasar.doma.boot:doma-spring-boot-starter:1.5.0")
+    implementation("org.seasar.doma:doma-slf4j:2.45.0")
+    // domaの注釈処理を実行することを示す
+    annotationProcessor "org.seasar.doma:doma:2.20.0"
+    // domaへの依存を示す
+    implementation "org.seasar.doma:doma:2.20.0"
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -33,3 +45,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+flyway {
+    url = "jdbc:mysql://localhost:3346/monsterlab-api"
+    user = "monsterlab"
+    password = "secret"
+    locations = ["filesystem:src/main/resources/db/createTable","filesystem:src/main/resources/db/insertData"]
+}
+/* flyway task */
+flywayMigrate

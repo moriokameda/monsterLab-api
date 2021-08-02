@@ -6,7 +6,7 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost:3346/monsterlab-api?useUnicode=true&characterEcoding=utf8
+    url: "jdbc:mysql://localhost:3346/monsterlab-api?useUnicode=true&characterEcoding=utf8"
     username: monsterlab
     password: secret
   flyway:

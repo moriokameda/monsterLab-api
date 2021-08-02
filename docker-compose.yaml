@@ -2,15 +2,24 @@ version: "3"
 services:
   mysql:
     build: ./docker/mysql
+    container_name: monsterlab-api-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: monsterLab-api
       MYSQL_USER: monsterlab
       MYSQL_PASSWORD: secret
     volumes:
-    - monsterLab-mysql-data:/var/lib/mysql
+      - monsterlab-api-mysql-data:/var/lib/mysql
     ports:
-    - 3346:3306
+      - 3346:3306
+  workspace:
+    build:
+      context: ./docker/workspace
+    tty: true
+    environment:
+      DB_HOST: mysql
+      DB_NAME: monsterlab-api
+      DB_USER: root
 volumes:
-  monsterLab-mysql-data:
+  monsterlab-api-mysql-data:
     driver: local

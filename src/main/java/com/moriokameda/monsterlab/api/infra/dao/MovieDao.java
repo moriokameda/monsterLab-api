@@ -25,5 +25,5 @@ public interface MovieDao {
     public MovieEntity findMovieById(BigInteger movieId);
 
     @Update(ignoreVersion = true)
-    public int updateOne(MovieEntity record);
+    public Result<MovieEntity> updateOne(MovieEntity record);
 }

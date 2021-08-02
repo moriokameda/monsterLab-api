@@ -9,7 +9,7 @@ import org.seasar.doma.Table;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
-@Entity(immutable = false)
+@Entity(immutable = true)
 @Table(name = "movies")
 @Data
 public class MovieEntity {

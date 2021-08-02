@@ -6,6 +6,7 @@ import com.moriokameda.monsterlab.domain.model.FavoriteMovie;
 import com.moriokameda.monsterlab.domain.model.Movie;
 import com.moriokameda.monsterlab.domain.model.MovieId;
 import com.moriokameda.monsterlab.domain.repository.MovieRepository;
+import org.seasar.doma.jdbc.Result;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     @Override
     public void addFavoriteMovie(Movie movie) {
-        int result = movieDao.updateOne(new MovieEntity(movie));
-        if (result == 0) {
+        Result<MovieEntity> result = movieDao.updateOne(new MovieEntity(movie));
+        if (result.getCount() == 0) {
             try {
                 throw new IllegalArgumentException();
             } catch (IllegalArgumentException e) {
