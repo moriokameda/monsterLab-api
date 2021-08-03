@@ -75,9 +75,7 @@ mysql       : 5.7
 
 ### confirm API overView
 
-monsterLab-api.yamlを参照または下記コマンドを実行し、
-```
-```
+`monsterLab-api.yaml`を参照または`redoc-static.html`をchromeに貼り付けて参照
 
 ## Author
 

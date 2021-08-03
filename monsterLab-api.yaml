@@ -1,15 +1,15 @@
 openapi: 3.0.3
 info:
   title: monsterLab-api
-  description: monsterLab-api
+  description: monsterLab-api のmovie のお気に入り追加と一覧参照、動画一覧、動画詳細の表示を行うAPI
   version: 1.0.0
 servers:
   - url: 'https://localhost:8080/api/v1'
 tags:
   - name: favorite
-    description: favorite
+    description: favorite お気に入りのmovie系のリクエストタグ
   - name: movie
-    description: movies list
+    description: movies 動画の取得のリクエストタグ
 components:
   parameters:
     id:
@@ -60,7 +60,7 @@ components:
     MovieListResponse:
       type: array
       items:
-        $ref: Movie
+        $ref: "#/components/schemas/Movie"
     Movie:
       type: object
       properties:
@@ -70,9 +70,11 @@ components:
           $ref: "#/components/schemas/MovieTitle"
         movieDescription:
           $ref: "#/components/schemas/MovieDescription"
+        favoriteFlg:
+          $ref: "#/components/schemas/FavoriteFlg"
         favoriteCount:
           $ref: "#/components/schemas/FavoriteCount"
-    Error:
+    ErrorAny:
       type: object
       properties:
         timestamp:
@@ -87,7 +89,13 @@ components:
           type: string
         path:
           type: string
-
+    ErrorValidation:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
 paths:
   /favorites:
     get:
@@ -114,7 +122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorAny"
   /favorite/{id}:
     post:
       tags:
@@ -130,19 +138,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorValidation"
         404:
           description: NOT_FOUND
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorAny"
         500:
           description: INTERNAL_SERVER_ERROR
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorAny"
   /movies:
     get:
       tags:
@@ -167,13 +175,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorValidation"
         500:
           description: INTERNAL_SERVER_ERROR
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorAny"
   /movies/{id}:
     get:
       tags:
@@ -198,16 +206,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorValidation"
         404:
           description: NOT_FOUND
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorAny"
         500:
           description: INTERNAL_SERVER_ERROR
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                $ref: "#/components/schemas/ErrorAny"
