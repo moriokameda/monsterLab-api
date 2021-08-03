@@ -49,11 +49,14 @@ src -|
 ## Enviroment
 
 ```
-Java        : 11.0.10.hs-adpt
-Spring Boot : 2.5.3
-doma2       : 2.20
-flyway      : 6.5.0
-mysql       : 5.7
+Java           : 11.0.10.hs-adpt
+Spring Boot    : 2.5.3
+doma2          : 2.20
+flyway         : 6.5.0
+mysql          : 5.7
+docker         : 20.x
+docker-compose : 3.x
+openapi        : 3.x
 ```
 
 ## Installation
