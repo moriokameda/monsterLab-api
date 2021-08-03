@@ -3,6 +3,6 @@ from movies
 where
 /*%if keyword != null */
     movie_title like /* @infix(keyword) */'test'
-  and movie_description like /* @prefix(keyword) */'test'
+  or movie_description like /* @infix(keyword) */'test'
 /*%end */
 order by favorite_count desc

@@ -1,10 +1,11 @@
 package com.moriokameda.monsterlab.application.service;
 
+import com.moriokameda.monsterlab.api.infra.exception.NotFoundException;
 import com.moriokameda.monsterlab.domain.model.FavoriteMovie;
 import com.moriokameda.monsterlab.domain.model.Movie;
 import com.moriokameda.monsterlab.domain.model.MovieId;
 import com.moriokameda.monsterlab.domain.repository.MovieRepository;
-import javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Service
 public class MovieService {
 
+    @Autowired
     private MovieRepository movieRepository;
 
     @Transactional(readOnly = true)
@@ -22,14 +24,8 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public Movie getMovieOne(MovieId movieId) {
-        Movie result = movieRepository.findMovieById(movieId);
-        if (result == null) {
-            try {
-                throw new NotFoundException("not exists movie");
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        Movie result = null;
+        result = movieRepository.findMovieById(movieId);
         return result;
     }
 
@@ -41,14 +37,9 @@ public class MovieService {
     @Transactional(readOnly = false)
     public void addFavoriteMovie(MovieId id) {
         Movie movie = movieRepository.findMovieById(id);
-        if (movie == null) {
-            try {
-                throw new NotFoundException("not exists movie");
-            } catch (NotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        movie.setFavoriteFlg(!movie.isFavoriteFlg());
+        if (movie == null) throw new NotFoundException("id not found");
+        movie.setFavoriteFlg(true);
+        movie.addFavoriteCount();
         movieRepository.addFavoriteMovie(movie);
     }
 }

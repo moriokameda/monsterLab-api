@@ -1,11 +1,13 @@
 package com.moriokameda.monsterlab.domain.model;
 
 import com.moriokameda.monsterlab.api.infra.entity.MovieEntity;
+import lombok.Data;
 
 /**
  * favorite movie domain
  * @author moriokameda
  */
+@Data
 public class FavoriteMovie {
     private MovieId movieId;
 

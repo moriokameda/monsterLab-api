@@ -2,15 +2,12 @@ package com.moriokameda.monsterlab.domain.model;
 
 import com.moriokameda.monsterlab.api.infra.entity.MovieEntity;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Movie domain
+ *
  * @author moriokameda
  */
-@Getter
-@Setter
 @Data
 public class Movie {
     /* 動画ID */
@@ -34,5 +31,10 @@ public class Movie {
         this.movieDescription = new MovieDescription(entity.getMovieDescription());
         this.favoriteFlg = entity.isFavoriteFlg();
         this.favoriteCount = new FavoriteCount(entity.getFavoriteCount());
+    }
+
+    public void addFavoriteCount() {
+        int addedCount = this.favoriteCount.getValue() + 1;
+        this.favoriteCount = new FavoriteCount(addedCount);
     }
 }

@@ -75,10 +75,18 @@ components:
     Error:
       type: object
       properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+        error:
+          type: string
+        trace:
+          type: string
         message:
           type: string
-        code:
-          type: integer
+        path:
+          type: string
 
 paths:
   /favorites:
@@ -97,8 +105,10 @@ paths:
               example:
                 - movie_id: 1
                   movie_title: "harry potter"
+                  movie_description: "this is a fantasiy movie to use magic"
                 - movie_id: 2
                   movie_title: "pirates of Caribbean"
+                  movie_description: "this is the fantasiy battle movie in the sea"
         500:
           description: INTERNAL_SERVER_ERROR
           content:

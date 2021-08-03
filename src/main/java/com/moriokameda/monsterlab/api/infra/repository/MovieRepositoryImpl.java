@@ -2,11 +2,13 @@ package com.moriokameda.monsterlab.api.infra.repository;
 
 import com.moriokameda.monsterlab.api.infra.dao.MovieDao;
 import com.moriokameda.monsterlab.api.infra.entity.MovieEntity;
+import com.moriokameda.monsterlab.api.infra.exception.NotFoundException;
 import com.moriokameda.monsterlab.domain.model.FavoriteMovie;
 import com.moriokameda.monsterlab.domain.model.Movie;
 import com.moriokameda.monsterlab.domain.model.MovieId;
 import com.moriokameda.monsterlab.domain.repository.MovieRepository;
 import org.seasar.doma.jdbc.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @Repository
 public class MovieRepositoryImpl implements MovieRepository {
 
+    @Autowired
     private MovieDao movieDao;
 
     @Override
@@ -27,11 +30,7 @@ public class MovieRepositoryImpl implements MovieRepository {
     public void addFavoriteMovie(Movie movie) {
         Result<MovieEntity> result = movieDao.updateOne(new MovieEntity(movie));
         if (result.getCount() == 0) {
-            try {
-                throw new IllegalArgumentException();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            }
+            throw new NotFoundException("update failed");
         }
     }
 
@@ -43,6 +42,8 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     @Override
     public Movie findMovieById(MovieId movieId) {
-        return new Movie(movieDao.findMovieById(movieId.getValue()));
+        MovieEntity targetEntity = movieDao.findMovieById(movieId.getValue());
+        if (targetEntity == null) throw new NotFoundException("id not found");
+        return new Movie(targetEntity);
     }
 }

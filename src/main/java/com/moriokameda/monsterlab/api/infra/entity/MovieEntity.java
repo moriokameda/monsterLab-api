@@ -2,9 +2,7 @@ package com.moriokameda.monsterlab.api.infra.entity;
 
 import com.moriokameda.monsterlab.domain.model.Movie;
 import lombok.Data;
-import org.seasar.doma.Column;
-import org.seasar.doma.Entity;
-import org.seasar.doma.Table;
+import org.seasar.doma.*;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 @Data
 public class MovieEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
     private final BigInteger movieId;
 
