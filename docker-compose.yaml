@@ -16,10 +16,6 @@ services:
     build:
       context: ./docker/workspace
     tty: true
-    environment:
-      DB_HOST: mysql
-      DB_NAME: monsterlab-api
-      DB_USER: root
 volumes:
   monsterlab-api-mysql-data:
     driver: local
